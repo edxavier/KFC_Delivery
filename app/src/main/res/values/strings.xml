@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">KFC Delivery</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Configuraciones</string>
+    <string name="action_add_comment">Agregar comentario</string>
+    <string name="action_exit">Cerrar</string>
+    <string name="action_exit_session">Salir y Cerrar Sesion</string>
+    <string name="title_activity_maps">Map</string>
+
+</resources>
