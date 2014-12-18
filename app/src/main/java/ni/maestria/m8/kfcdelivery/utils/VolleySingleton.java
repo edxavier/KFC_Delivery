@@ -33,7 +33,6 @@ public class VolleySingleton {
             }
         });
 
-
     }
 
     public static VolleySingleton getInstance(Context context) {

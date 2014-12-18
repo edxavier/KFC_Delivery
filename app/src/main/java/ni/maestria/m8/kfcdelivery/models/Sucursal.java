@@ -17,19 +17,17 @@ public class Sucursal {
     private String telefono;
     private String direccion;
     private Double distancia;
-    private String imagenUrl;
-    public static String LIST_URL = "http://192.168.137.138:8000/api/restaurantes/?format=json&lat=12.097659&lon=-86.2584606";
+
+    private String coordenadas;
+
+
+
+    public static String LIST_URL = "http://192.168.137.20:8000/api/restaurantes/?format=json&lat=12.097659&lon=-86.2584606";
 
 
     public Sucursal() {
     }
 
-    public Sucursal(String nombre, String telefono, String direccion, Double distancia) {
-        this.nombre = nombre;
-        this.telefono = telefono;
-        this.direccion = direccion;
-        this.distancia = distancia;
-    }
 
     public int getId() {
         return id;
@@ -38,6 +36,14 @@ public class Sucursal {
     public void setId(int id) {
         this.id = id;
     }
+    public String getCoordenadas() {
+        return coordenadas;
+    }
+
+    public void setCoordenadas(String coordenadas) {
+        this.coordenadas = coordenadas;
+    }
+
     public String getTelefono() {
         return telefono;
     }
@@ -70,14 +76,6 @@ public class Sucursal {
         this.distancia = distancia;
     }
 
-    public String getImagenUrl() {
-        return imagenUrl;
-    }
-
-    public void setImagenUrl(String imagenUrl) {
-        this.imagenUrl = imagenUrl;
-    }
-
 
     public static  ArrayList<Sucursal> getParseSucursalesJson(JSONArray response)
     {
@@ -90,6 +88,7 @@ public class Sucursal {
                 sucursal.setDireccion(jsonObject.getString("direccion"));
                 sucursal.setDistancia(jsonObject.getDouble("distancia_km"));
                 sucursal.setTelefono(jsonObject.getString("telefono"));
+                sucursal.setCoordenadas(jsonObject.getString("coordenadas"));
                 sucursal.setId(jsonObject.getInt("id"));
                 sucursals.add(sucursal);
 

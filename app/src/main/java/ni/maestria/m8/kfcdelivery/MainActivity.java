@@ -13,7 +13,8 @@ import ni.maestria.m8.kfcdelivery.listeners.TabListener;
 
 
 public class MainActivity extends ActionBarActivity {
-
+    FragmentList fragmentList = new FragmentList();
+    TabListener tabListenerList = new TabListener(fragmentList);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +56,7 @@ public class MainActivity extends ActionBarActivity {
         ActionBar.Tab tab2 = actionBar.newTab().setText("Mapa");
         ActionBar.Tab tab3 = actionBar.newTab().setText("Comentarios");
 
-        tab1.setTabListener(new TabListener(new FragmentList()));
+        tab1.setTabListener(tabListenerList);
         tab2.setTabListener(new TabListener(new FragmentMap()));
         tab3.setTabListener(new TabListener(new FragmenComments()));
 

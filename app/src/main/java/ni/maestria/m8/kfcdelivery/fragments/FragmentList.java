@@ -1,6 +1,5 @@
 package ni.maestria.m8.kfcdelivery.fragments;
 
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,19 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-
-import org.json.JSONArray;
+import java.util.ArrayList;
 
 import ni.maestria.m8.kfcdelivery.R;
 import ni.maestria.m8.kfcdelivery.adapters.AdapterSucursal;
+import ni.maestria.m8.kfcdelivery.models.Comment;
 import ni.maestria.m8.kfcdelivery.models.Sucursal;
-import ni.maestria.m8.kfcdelivery.utils.VolleySingleton;
+import ni.maestria.m8.kfcdelivery.utils.DataSourceSingleton;
 
 /**
  * Created by cura on 11/12/2014.
@@ -30,8 +24,8 @@ import ni.maestria.m8.kfcdelivery.utils.VolleySingleton;
 public class FragmentList extends Fragment {
 
     private RecyclerView mRecyclerView;
-    private AdapterSucursal adapterSucursal;
     private RecyclerView.LayoutManager mLayoutManager;
+    private AdapterSucursal adapterSucursal;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -52,30 +46,26 @@ public class FragmentList extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        final ProgressDialog pgd = new ProgressDialog(getActivity());
-        pgd.setMessage("Cargango lista de restaurantes...");
-        pgd.show();
+        DataSourceSingleton.getInstance(getActivity()).setDataReadyListener(new DataSourceSingleton.DataReadyListener() {
 
-        RequestQueue requestQueue = VolleySingleton.getInstance(getActivity()).getRequestQueue();
-
-        JsonArrayRequest req = new JsonArrayRequest(Sucursal.LIST_URL,new Response.Listener<JSONArray>() {
             @Override
-
-            public void onResponse(JSONArray response) {
-                pgd.dismiss();
-                adapterSucursal = new AdapterSucursal(Sucursal.getParseSucursalesJson(response),R.layout.row_list);
+            public void OnSucursalesDataReady(ArrayList<Sucursal> sucursals) {
+                adapterSucursal = new AdapterSucursal(sucursals,R.layout.row_list);
                 mRecyclerView.setAdapter(adapterSucursal);
-
             }
-        },new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                pgd.dismiss();
-                Toast.makeText(getActivity(),"Ocurrio un error inesperado!",Toast.LENGTH_LONG).show();
+            public void OnComentariosDataReady(ArrayList<Comment> comments) {
             }
         });
 
-        requestQueue.add(req);
+        adapterSucursal = new AdapterSucursal(
+                DataSourceSingleton.getInstance(getActivity()).getSucursalsArray(),
+                R.layout.row_list);
+        mRecyclerView.setAdapter(adapterSucursal);
+
 
     }
+
+
+
 }

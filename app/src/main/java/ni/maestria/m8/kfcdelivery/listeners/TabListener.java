@@ -23,7 +23,8 @@ public class TabListener implements ActionBar.TabListener {
 
     @Override
     public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        fragmentTransaction.remove(this.fragment);
+        //fragmentTransaction.remove(this.fragment);
+        //fragmentTransaction.hide(this.fragment);
     }
 
     @Override
