@@ -1,10 +1,12 @@
 package ni.maestria.m8.kfcdelivery;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import ni.maestria.m8.kfcdelivery.fragments.FragmenComments;
 import ni.maestria.m8.kfcdelivery.fragments.FragmentList;
@@ -40,9 +42,24 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case  R.id.action_settings:
+                Toast.makeText(this,"Conf",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.action_add_comment:
+                Intent sendComment = new Intent(this,NewComentActivity.class);
+                startActivity(sendComment);
+                break;
+            case R.id.action_exit:
+                finish();
+                break;
+            case R.id.action_exit_session:
+                finish();
+                break;
         }
+        //if (id == R.id.action_settings) {
+          //  return true;
+        //}
 
         return super.onOptionsItemSelected(item);
     }

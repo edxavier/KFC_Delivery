@@ -2,13 +2,15 @@
 <resources>
 
     <string name="app_name">KFC Delivery</string>
+    <string name="app_name2">KFC</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Configuraciones</string>
     <string name="action_add_comment">Agregar comentario</string>
     <string name="action_exit">Cerrar</string>
+
     <string name="action_exit_session">Salir y Cerrar Sesion</string>
-    <string name="title_activity_maps">Map</string>
-    <string name="title_activity_row_comments">RowCommentsActivity</string>
-    <string name="title_activity_main_activity2">MainActivity2</string>
+    <string name="title_activity_new_coment">Nuevo Comentario</string>
+    <string name="title_activity_make_order">Realizar pedido</string>
+    <string name="title_activity_make_order_subtitle">Selecciona el o los combos de tu preferencia</string>
 
 </resources>

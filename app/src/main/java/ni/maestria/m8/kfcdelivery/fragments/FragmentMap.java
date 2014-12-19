@@ -1,5 +1,6 @@
 package ni.maestria.m8.kfcdelivery.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,8 +13,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 
@@ -47,14 +50,10 @@ public class FragmentMap extends Fragment {
         mapa.moveCamera(cameraUpdate);
         mapa.setMyLocationEnabled(true);
 
-        setMapa(mapa);
         setMarkers(mapa);
 
     }
 
-    private void setMapa(GoogleMap mapa){
-
-    }
 
     private void setMarkers(GoogleMap mapa){
 
@@ -65,7 +64,25 @@ public class FragmentMap extends Fragment {
 
             mapa.addMarker(new MarkerOptions()
                     .position(pos)
+                    .snippet("A un radio de " + sucursal.getDistancia().toString() + " Km de ti")
                     .title(sucursal.getNombre()));
+
+            mapa.addPolyline(new PolylineOptions().geodesic(true)
+                    .add(pos)  // Sydney
+                    .add(managua)  // Fiji
+                    .width(3)
+                    .color(Color.rgb(1,102,94))
+            );
+            CircleOptions circleOptions = new CircleOptions()
+                    .fillColor(Color.argb(50,184,225,134))
+                    .strokeWidth(3)
+                    .strokeColor(Color.rgb(77,146,33))
+                    .center(pos)
+                    .radius(6000); // In meters
+
+// Get back the mutable Circle
+            mapa.addCircle(circleOptions);
+
         }
     }
 }

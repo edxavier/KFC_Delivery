@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 import ni.maestria.m8.kfcdelivery.R;
 import ni.maestria.m8.kfcdelivery.adapters.AdapterSucursal;
-import ni.maestria.m8.kfcdelivery.models.Comment;
 import ni.maestria.m8.kfcdelivery.models.Sucursal;
 import ni.maestria.m8.kfcdelivery.utils.DataSourceSingleton;
 
@@ -53,9 +52,7 @@ public class FragmentList extends Fragment {
                 adapterSucursal = new AdapterSucursal(sucursals,R.layout.row_list);
                 mRecyclerView.setAdapter(adapterSucursal);
             }
-            @Override
-            public void OnComentariosDataReady(ArrayList<Comment> comments) {
-            }
+
         });
 
         adapterSucursal = new AdapterSucursal(

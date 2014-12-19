@@ -13,6 +13,7 @@ import org.json.JSONArray;
 
 import java.util.ArrayList;
 
+import ni.maestria.m8.kfcdelivery.R;
 import ni.maestria.m8.kfcdelivery.models.Comment;
 import ni.maestria.m8.kfcdelivery.models.Sucursal;
 
@@ -32,6 +33,10 @@ public class DataSourceSingleton {
     public DataSourceSingleton(final Context context) {
         pgd = new ProgressDialog(context);
         pgd.setMessage("Inicializando datos...");
+        pgd.setCancelable(false);
+        pgd.setTitle("Espere por favor...");
+        pgd.setIcon(R.drawable.ic_action_info_outline);
+
         pgd.show();
         getSucursalsArrayListFromServer(context);
         getCommentsArrayListFromServer(context);
@@ -90,9 +95,7 @@ public class DataSourceSingleton {
         JsonArrayRequest req = new JsonArrayRequest(Comment.API_URL,new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-
                 commentArrayList = Comment.getParsedJson(response);
-                dataReadyListener.OnComentariosDataReady(commentArrayList);
             }
         },new Response.ErrorListener() {
             @Override
@@ -113,7 +116,7 @@ public class DataSourceSingleton {
     //Interface para notificar cuando los datos esten cargados
     public interface DataReadyListener{
         public void OnSucursalesDataReady( ArrayList<Sucursal> sucursals);
-        public void OnComentariosDataReady( ArrayList<Comment> comments);
+
     }
 }
 

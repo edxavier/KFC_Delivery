@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import ni.maestria.m8.kfcdelivery.MakeOrder;
 import ni.maestria.m8.kfcdelivery.R;
 import ni.maestria.m8.kfcdelivery.models.Sucursal;
 
@@ -83,6 +84,8 @@ public class AdapterSucursal extends  RecyclerView.Adapter<AdapterSucursal.ViewH
         }
         else if (view.getId() == holder.order.getId()) {
             Toast.makeText(view.getContext(), "hacer pedido", Toast.LENGTH_SHORT).show();
+            Intent newOrder = new Intent(view.getContext(),MakeOrder.class);
+            view.getContext().startActivity(newOrder);
         }
         else if (view.getId() == holder.share.getId()) {
             Intent sendIntent = new Intent();

@@ -9,14 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 import ni.maestria.m8.kfcdelivery.R;
 import ni.maestria.m8.kfcdelivery.adapters.AdapterComentarios;
-import ni.maestria.m8.kfcdelivery.models.Comment;
-import ni.maestria.m8.kfcdelivery.models.Sucursal;
 import ni.maestria.m8.kfcdelivery.utils.DataSourceSingleton;
 
 /**
@@ -46,20 +41,7 @@ public class FragmenComments extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        DataSourceSingleton.getInstance(getActivity()).setDataReadyListener(new DataSourceSingleton.DataReadyListener() {
 
-            @Override
-            public void OnSucursalesDataReady(ArrayList<Sucursal> sucursals) {
-
-            }
-
-            @Override
-            public void OnComentariosDataReady(ArrayList<Comment> comments) {
-                adapterComentarios = new AdapterComentarios(R.layout.row_comentario,comments);
-                mRecyclerView.setAdapter(adapterComentarios);
-                Toast.makeText(getActivity(),"Evento",Toast.LENGTH_SHORT).show();
-            }
-        });
         adapterComentarios = new AdapterComentarios(R.layout.row_comentario,
                 DataSourceSingleton.getInstance(getActivity()).getCommentArrayList());
         mRecyclerView.setAdapter(adapterComentarios);
