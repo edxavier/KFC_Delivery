@@ -24,7 +24,7 @@
                 android:layout_height="70dp"
                 android:src="@drawable/user_red"
                 android:scaleType="fitCenter"
-                android:id="@+id/img_client"  />
+                android:id="@+id/img_menu"  />
 
         </LinearLayout>
 
@@ -41,7 +41,7 @@
                 android:textSize="15dp"
                 android:text="Cliente molesto"
                 android:textColor="@color/background_floating_material_dark"
-                android:id="@+id/txt_nombre_client" />
+                android:id="@+id/txt_menu" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
                 android:textSize="12dp"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="2 piesas de pollo \n2 papas \n2 papas\n2 papas"
-                android:id="@+id/txt_comment" />
+                android:id="@+id/txt_description" />
 
         </LinearLayout>
 
