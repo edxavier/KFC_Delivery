@@ -3,20 +3,49 @@ package ni.maestria.m8.kfcdelivery;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+
+import ni.maestria.m8.kfcdelivery.adapters.AdapterMenuCombos;
+import ni.maestria.m8.kfcdelivery.models.MenuCombos;
 
 
 public class MakeOrder extends ActionBarActivity {
 
     TextView tv ;
     Menu theMenu;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private AdapterMenuCombos adapterMenuCombos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_order);
+    }
+
+
+    void loadCombos(){
+        mRecyclerView = (RecyclerView) this.findViewById(R.id.recycler_view_menu);
+        mRecyclerView.setHasFixedSize(true);
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        ArrayList<MenuCombos> menuComboses = new ArrayList<>();
+        MenuCombos menuCombos = new MenuCombos();
+        menuCombos.setDescripcion("dddddddd");
+        menuCombos.setNombre("eeeeeeeeeeeee");
+        menuCombos.setPrecio("1223");
+        menuComboses.add(menuCombos);
+        adapterMenuCombos = new AdapterMenuCombos(R.layout.row_combo,menuComboses);
+        mRecyclerView.setAdapter(adapterMenuCombos);
     }
 
 

@@ -1,6 +1,7 @@
 package ni.maestria.m8.kfcdelivery.adapters;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -12,7 +13,7 @@ import ni.maestria.m8.kfcdelivery.R;
 import ni.maestria.m8.kfcdelivery.models.MenuCombos;
 
 /**
- * Created by cura on 20/12/2014.
+ * Created by cura on m 20/12/2014.
  */
 public class AdapterMenuCombos extends RecyclerView.Adapter<AdapterMenuCombos.ViewHolder> implements View.OnClickListener {
 
@@ -26,17 +27,24 @@ public class AdapterMenuCombos extends RecyclerView.Adapter<AdapterMenuCombos.Vi
 
     @Override
     public AdapterMenuCombos.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+        View v = LayoutInflater.from(parent.getContext()).inflate(view, parent, false);
+        return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(AdapterMenuCombos.ViewHolder holder, int position) {
-
+        MenuCombos menuCombo = menuCombosArrayList.get(position);
+        holder.txtPrice.setText(menuCombo.getPrecio());
+        holder.txtDescription.setText(menuCombo.getDescripcion());
+        holder.txtMenu.setText(menuCombo.getNombre());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        if(menuCombosArrayList!=null)
+            return menuCombosArrayList.size();
+        else
+            return 0;
     }
 
     @Override
