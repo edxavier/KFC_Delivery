@@ -10,10 +10,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import ni.maestria.m8.kfcdelivery.adapters.AdapterMenuCombos;
-import ni.maestria.m8.kfcdelivery.models.MenuCombos;
+import ni.maestria.m8.kfcdelivery.utils.DataSourceSingleton;
 
 
 public class MakeOrder extends ActionBarActivity {
@@ -28,23 +26,21 @@ public class MakeOrder extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_order);
+        loadCombos();
+
     }
 
 
     void loadCombos(){
-        mRecyclerView = (RecyclerView) this.findViewById(R.id.recycler_view_menu);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_menu);
         mRecyclerView.setHasFixedSize(true);
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        ArrayList<MenuCombos> menuComboses = new ArrayList<>();
-        MenuCombos menuCombos = new MenuCombos();
-        menuCombos.setDescripcion("dddddddd");
-        menuCombos.setNombre("eeeeeeeeeeeee");
-        menuCombos.setPrecio("1223");
-        menuComboses.add(menuCombos);
-        adapterMenuCombos = new AdapterMenuCombos(R.layout.row_combo,menuComboses);
+
+        adapterMenuCombos = new AdapterMenuCombos(R.layout.row_combo,
+                DataSourceSingleton.getInstance(this).getMenuComboses());
         mRecyclerView.setAdapter(adapterMenuCombos);
     }
 

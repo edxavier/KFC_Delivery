@@ -1,5 +1,11 @@
 package ni.maestria.m8.kfcdelivery.models;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 /**
  * Created by cura on 20/12/2014.
  */
@@ -8,6 +14,7 @@ public class MenuCombos {
     String descripcion;
     String precio;
     String imgUrl;
+    public static String API_URL= "http://192.168.137.20:8000/api/menu/?format=json";
 
     public MenuCombos() {
     }
@@ -43,4 +50,27 @@ public class MenuCombos {
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
     }
+
+    public static ArrayList<MenuCombos> getParsedJson(JSONArray response)
+    {
+        ArrayList<MenuCombos> menuComboses = new ArrayList<>();
+
+        for(int i = 0; i<response.length();i++){
+            MenuCombos combo = new MenuCombos();
+            try {
+                JSONObject jsonObject = (JSONObject) response.get(i);
+                combo.setNombre(jsonObject.getString("nombre"));
+                combo.setDescripcion(jsonObject.getString("descripcion"));
+                combo.setPrecio(jsonObject.getString("precio"));
+                combo.setImgUrl(jsonObject.getString("imagen"));
+
+                menuComboses.add(combo);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return menuComboses;
+    }
+
 }

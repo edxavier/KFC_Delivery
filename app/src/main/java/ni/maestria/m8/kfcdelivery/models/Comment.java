@@ -1,7 +1,5 @@
 package ni.maestria.m8.kfcdelivery.models;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,9 +12,18 @@ import java.util.ArrayList;
 public class Comment {
     String comment;
     String client;
+    String imgUrl;
     public static String API_URL= "http://192.168.137.20:8000/api/comentarios/?format=json";
 
     public Comment() {
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
     public String getComment() {
@@ -43,14 +50,13 @@ public class Comment {
             Comment comment = new Comment();
             try {
                 JSONObject jsonObject = (JSONObject) response.get(i);
-                JSONObject subJsonObject = jsonObject.getJSONObject("cliente");
-                comment.setClient(subJsonObject.getString("nombre"));
+                comment.setClient(jsonObject.getString("cliente"));
                 comment.setComment(jsonObject.getString("comentario"));
+                comment.setImgUrl(jsonObject.getString("imagen_url"));
                 comments.add(comment);
 
             } catch (JSONException e) {
                 e.printStackTrace();
-                Log.e("Commetns","Error "+e.getMessage());
             }
         }
         return comments;

@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import ni.maestria.m8.kfcdelivery.R;
 import ni.maestria.m8.kfcdelivery.models.Comment;
+import ni.maestria.m8.kfcdelivery.models.MenuCombos;
 import ni.maestria.m8.kfcdelivery.models.Sucursal;
 
 /**
@@ -22,8 +23,10 @@ import ni.maestria.m8.kfcdelivery.models.Sucursal;
  */
 public class DataSourceSingleton {
 
-    private ArrayList<Sucursal> sucursalsArray = new ArrayList<Sucursal>();
-    private ArrayList<Comment> commentArrayList = new ArrayList<Comment>();
+    private ArrayList<Sucursal> sucursalsArray = new ArrayList<>();
+
+    private ArrayList<Comment> commentArrayList = new ArrayList<>();
+    private ArrayList<MenuCombos> menuComboses = new ArrayList<>();
     private static DataSourceSingleton instance;
     ProgressDialog pgd;
     private int dataRequests;//variable para almacenar el numero de intentos de conexion
@@ -40,6 +43,7 @@ public class DataSourceSingleton {
         pgd.show();
         getSucursalsArrayListFromServer(context);
         getCommentsArrayListFromServer(context);
+        getMenusArrayListFromServer(context);
 
     }
 
@@ -50,6 +54,9 @@ public class DataSourceSingleton {
     public ArrayList<Comment> getCommentArrayList() {
         return commentArrayList;
     }
+    public ArrayList<MenuCombos> getMenuComboses() {
+        return menuComboses;
+    }
 
     public static DataSourceSingleton getInstance(Context context) {
         if(instance == null)
@@ -59,7 +66,7 @@ public class DataSourceSingleton {
 
 
     //Funcion para consumo de API REST del servidor para la lista de restaurantes
-    private void getSucursalsArrayListFromServer(final Context context){
+    public void getSucursalsArrayListFromServer(final Context context){
         RequestQueue requestQueue = VolleySingleton.getInstance(context).getRequestQueue();
         dataRequests++;
         JsonArrayRequest req = new JsonArrayRequest(Sucursal.LIST_URL,new Response.Listener<JSONArray>() {
@@ -89,7 +96,7 @@ public class DataSourceSingleton {
     }
 
 
-    private void getCommentsArrayListFromServer(final Context context){
+    public void getCommentsArrayListFromServer(final Context context){
 
         RequestQueue requestQueue = VolleySingleton.getInstance(context).getRequestQueue();
         JsonArrayRequest req = new JsonArrayRequest(Comment.API_URL,new Response.Listener<JSONArray>() {
@@ -102,6 +109,24 @@ public class DataSourceSingleton {
             public void onErrorResponse(VolleyError error) {
                 //pgd.dismiss();
                     getCommentsArrayListFromServer(context);
+            }
+        });
+        requestQueue.add(req);
+    }
+
+    public void getMenusArrayListFromServer(final Context context){
+
+        RequestQueue requestQueue = VolleySingleton.getInstance(context).getRequestQueue();
+        JsonArrayRequest req = new JsonArrayRequest(MenuCombos.API_URL,new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                menuComboses = MenuCombos.getParsedJson(response);
+            }
+        },new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //pgd.dismiss();
+                getMenusArrayListFromServer(context);
             }
         });
         requestQueue.add(req);

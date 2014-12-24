@@ -45,6 +45,8 @@ public class MainActivity extends ActionBarActivity {
         switch (id){
             case  R.id.action_settings:
                 Toast.makeText(this,"Conf",Toast.LENGTH_LONG).show();
+                Intent newOrder = new Intent(this,MakeOrder.class);
+                startActivity(newOrder);
                 break;
             case R.id.action_add_comment:
                 Intent sendComment = new Intent(this,NewComentActivity.class);
