@@ -36,7 +36,7 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Enviar"
+            android:text="Enviar Comentario"
             android:id="@+id/btn_enviar" />
     </LinearLayout>
 </RelativeLayout>
