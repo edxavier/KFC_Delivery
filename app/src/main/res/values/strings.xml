@@ -7,10 +7,14 @@
     <string name="action_settings">Configuraciones</string>
     <string name="action_add_comment">Agregar comentario</string>
     <string name="action_exit">Cerrar</string>
-
+    <string name="action_revoke_acces">Desvincular mi cuenta</string>
     <string name="action_exit_session">Salir y Cerrar Sesion</string>
     <string name="title_activity_new_coment">Nuevo Comentario</string>
     <string name="title_activity_make_order">Realizar pedido</string>
     <string name="title_activity_make_order_subtitle">Selecciona el o los combos de tu preferencia</string>
+    <string name="app_desc">Kentucky Fried Chicken, más conocido por sus siglas KFC,
+        es una franquicia de restaurantes de comida rápida especializada en pollo frito,
+        que pertenece al grupo Yum! Brands.</string>
+    <string name="title_activity_login">Sign in</string>
 
 </resources>

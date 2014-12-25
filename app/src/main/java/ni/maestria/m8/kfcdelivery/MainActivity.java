@@ -17,13 +17,17 @@ import ni.maestria.m8.kfcdelivery.listeners.TabListener;
 public class MainActivity extends ActionBarActivity {
     FragmentList fragmentList = new FragmentList();
     TabListener tabListenerList = new TabListener(fragmentList);
+    public static int RESULT_EXIT = 1;
+    public static int RESULT_EXIT_SESSION = 2;
+    public static int RESULT_REVOKE_ACCESS = 3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
-        //comentario
-        //otro comentario
         setActionBar();
+
     }
 
 
@@ -40,7 +44,7 @@ public class MainActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        Intent returnIntent = new Intent();
         //noinspection SimplifiableIfStatement
         switch (id){
             case  R.id.action_settings:
@@ -53,9 +57,21 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(sendComment);
                 break;
             case R.id.action_exit:
+                returnIntent = new Intent();
+                returnIntent.putExtra("result",MainActivity.RESULT_EXIT);
+                setResult(RESULT_OK,returnIntent);
                 finish();
                 break;
             case R.id.action_exit_session:
+                returnIntent = new Intent();
+                returnIntent.putExtra("result",MainActivity.RESULT_EXIT_SESSION);
+                setResult(RESULT_OK,returnIntent);
+                finish();
+                break;
+            case R.id.action_revoke_acces:
+                returnIntent = new Intent();
+                returnIntent.putExtra("result",MainActivity.RESULT_REVOKE_ACCESS);
+                setResult(RESULT_OK,returnIntent);
                 finish();
                 break;
         }
