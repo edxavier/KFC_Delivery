@@ -22,6 +22,10 @@ public class MakeOrder extends ActionBarActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private AdapterMenuCombos adapterMenuCombos;
 
+    public Menu getTheMenu() {
+        return theMenu;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,12 +72,12 @@ public class MakeOrder extends ActionBarActivity {
         switch (id){
             case R.id.action_send:
                 tv.setText("orden:(1) C$300");
-                theMenu.findItem(3).setActionView(tv);
+               // theMenu.findItem(3).setActionView(tv);
                 break;
 
             case R.id.action_shop_car:
                 tv.setText("orden:(2) C$400");
-                theMenu.findItem(3).setActionView(tv);
+              //  theMenu.findItem(3).setActionView(tv);
                 break;
         }
 

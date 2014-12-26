@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import ni.maestria.m8.kfcdelivery.models.Comment;
 import ni.maestria.m8.kfcdelivery.utils.DataSourceSingleton;
 import ni.maestria.m8.kfcdelivery.utils.VolleySingleton;
 
@@ -85,11 +86,11 @@ public class NewComentActivity extends ActionBarActivity implements View.OnClick
             }
 
             RequestQueue requestQueue = VolleySingleton.getInstance(this).getRequestQueue();
-            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,"http://192.168.137.20:8000/api/comentarios/",jsonObject, new Response.Listener<JSONObject>() {
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, Comment.API_POST_URL,jsonObject, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
                     pgd.dismiss();
-                    Toast.makeText(getApplicationContext(),"¡Listo, comentario guardado!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"¡Listo, comentario guardado! "+response.toString(),Toast.LENGTH_LONG).show();
                     DataSourceSingleton.getInstance(getApplicationContext()).getCommentsArrayListFromServer(getApplicationContext());
                     finish();
                 }

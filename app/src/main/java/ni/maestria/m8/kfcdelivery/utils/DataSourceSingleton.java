@@ -99,7 +99,7 @@ public class DataSourceSingleton {
     public void getCommentsArrayListFromServer(final Context context){
 
         RequestQueue requestQueue = VolleySingleton.getInstance(context).getRequestQueue();
-        JsonArrayRequest req = new JsonArrayRequest(Comment.API_URL,new Response.Listener<JSONArray>() {
+        JsonArrayRequest req = new JsonArrayRequest(Comment.API_GET_URL,new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 commentArrayList = Comment.getParsedJson(response);

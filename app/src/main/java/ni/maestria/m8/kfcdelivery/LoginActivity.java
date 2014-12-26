@@ -16,6 +16,8 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
+import ni.maestria.m8.kfcdelivery.db.OperationsTempDetalle;
+
 
 public class LoginActivity extends ActionBarActivity implements View.OnClickListener,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -87,6 +89,8 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
+        OperationsTempDetalle dbOperations = new OperationsTempDetalle(this);
+        dbOperations.delete();
     }
 
     @Override
@@ -99,6 +103,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                 String personName = currentPerson.getDisplayName();
                 String personPhoto = currentPerson.getImage().getUrl();
                 String personGooglePlusProfile = currentPerson.getUrl();
+
                 Toast.makeText(this, "Bienvenido, " + personName, Toast.LENGTH_LONG).show();
                 Intent main = new Intent().setClass(LoginActivity.this, MainActivity.class);
                 //startActivity(main);
