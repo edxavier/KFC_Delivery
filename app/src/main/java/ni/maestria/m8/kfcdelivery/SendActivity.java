@@ -20,7 +20,8 @@ public class SendActivity extends ActionBarActivity implements View.OnClickListe
         Button btnTerminar = (Button) findViewById(R.id.btn_terminar);
         txtNombre = (TextView) findViewById(R.id.txtNombre_envio);
         txtTelefono = (TextView) findViewById(R.id.txt_telefono);
-        txtDireccion = (TextView) findViewById(R.        btnTerminar.setOnClickListener(this);
+        txtDireccion = (TextView) findViewById(R.id.txt_direccion_envio);
+        btnTerminar.setOnClickListener(this);
     }
 
     @Override
