@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.toolbox.NetworkImageView;
 
@@ -64,7 +63,7 @@ public class AdapterMenuCombos extends RecyclerView.Adapter<AdapterMenuCombos.Vi
         holder.txtDescription.setText(menuCombo.getDescripcion());
         holder.txtMenu.setText(menuCombo.getNombre());
         holder.comboAvatar.setImageUrl(menuCombo.getImgUrl(), VolleySingleton.getInstance(holder.comboAvatar.getContext()).getImageLoader());
-
+        holder.imgURl = menuCombo.getImgUrl();
 
     }
 
@@ -98,8 +97,6 @@ public class AdapterMenuCombos extends RecyclerView.Adapter<AdapterMenuCombos.Vi
                 float subTotal = (dt.getSubTotal()) + (Float.parseFloat(menu.getPrecio()));
                 dt.setSubTotal(subTotal);
                 dbOperations.update(dt);
-                Toast.makeText(view.getContext(),dt.getMenu() + "\nCantidad: " + dt.getCantidad()
-                            + "\nSub Total " + dt.getSubTotal(), Toast.LENGTH_SHORT).show();
                 dt=null;
             }else {
                 orderArrayList.add(menu);
@@ -123,8 +120,6 @@ public class AdapterMenuCombos extends RecyclerView.Adapter<AdapterMenuCombos.Vi
                 float subTotal = (dt.getSubTotal()) - (Float.parseFloat(menu.getPrecio()));
                 dt.setSubTotal(subTotal);
                 dbOperations.update(dt);
-                Toast.makeText(view.getContext(),dt.getMenu() + "\nCantidad: " + dt.getCantidad()
-                        + "\nSub Total " + dt.getSubTotal(), Toast.LENGTH_SHORT).show();
                 if(dt.getCantidad() < 1 ) {
                     orderArrayList.remove(menu);
                     dbOperations.delete(dt.getMenu());
@@ -140,9 +135,11 @@ public class AdapterMenuCombos extends RecyclerView.Adapter<AdapterMenuCombos.Vi
             sendIntent.setAction(Intent.ACTION_SEND);
             sendIntent.putExtra(Intent.EXTRA_TEXT, "Te comparto y recomiendo este sabroso  "+holder.txtMenu.getText()+" de KFC a tan solo C$"+holder.txtPrice.getText());
             sendIntent.setType("text/plain");
-            Uri img = Uri.parse("android.resource://" + view.getContext().getPackageName() + "/drawable/"+  R.drawable.restaurants );
-
-            sendIntent.putExtra(Intent.EXTRA_STREAM, img);
+            //Uri img = Uri.parse("android.resource://" + view.getContext().getPackageName() + "/drawable/"+  R.drawable.restaurants );
+            //sendIntent.putExtra(Intent.EXTRA_STREAM, img);
+            Uri uri = Uri.parse(holder.imgURl);
+            sendIntent.setType("image/*");
+            sendIntent.putExtra(Intent.EXTRA_STREAM, String.valueOf(uri));
             sendIntent.setType("image/jpeg");
 
 
@@ -158,6 +155,7 @@ public class AdapterMenuCombos extends RecyclerView.Adapter<AdapterMenuCombos.Vi
         ImageButton addOrder;
         ImageButton removeOrder;
         ImageButton share;
+        String imgURl;
 
         public ViewHolder(View itemView) {
             super(itemView);

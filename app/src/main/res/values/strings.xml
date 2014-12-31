@@ -16,5 +16,6 @@
         es una franquicia de restaurantes de comida rápida especializada en pollo frito,
         que pertenece al grupo Yum! Brands.</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_send">KFC</string>
 
 </resources>

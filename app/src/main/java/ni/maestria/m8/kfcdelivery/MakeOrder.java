@@ -1,5 +1,6 @@
 package ni.maestria.m8.kfcdelivery;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -71,10 +72,9 @@ public class MakeOrder extends ActionBarActivity {
         int id = item.getItemId();
         switch (id){
             case R.id.action_send:
-                tv.setText("orden:(1) C$300");
-               // theMenu.findItem(3).setActionView(tv);
+                Intent sendOrder = new Intent(this,SendActivity.class);
+                startActivity(sendOrder);
                 break;
-
             case R.id.action_shop_car:
                 tv.setText("orden:(2) C$400");
               //  theMenu.findItem(3).setActionView(tv);
