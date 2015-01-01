@@ -40,7 +40,7 @@ public class OperationsTempDetalle {
         ArrayList<DetallePedido> detalles = new ArrayList<>();
 
         db = dbOpenHelper.getWritableDatabase();
-        String [] cols = new  String [] {"_id", "menu", "cantidad", "total"};
+        String [] cols = new  String [] {"_id", "menu", "cantidad","precio", "total"};
         Cursor cursor = db.query(TABLE, cols , null, null, null, null, null);
 
         while(cursor.moveToNext())

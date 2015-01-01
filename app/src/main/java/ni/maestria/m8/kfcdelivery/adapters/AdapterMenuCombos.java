@@ -43,6 +43,10 @@ public class AdapterMenuCombos extends RecyclerView.Adapter<AdapterMenuCombos.Vi
 
     }
 
+    public int getCantidad() {
+        return cantidad;
+    }
+
     @Override
     public AdapterMenuCombos.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(view, parent, false);

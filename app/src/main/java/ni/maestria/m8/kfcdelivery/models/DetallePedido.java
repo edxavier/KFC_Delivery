@@ -8,6 +8,7 @@ public class DetallePedido {
     int cantidad;
     float precio;
     float subTotal;
+    public static String API_POST_URL = "http://192.168.137.20:8000/api/detalle_pedido/";
 
     public DetallePedido(String menu, int cantidad, float subTotal) {
         this.menu = menu;

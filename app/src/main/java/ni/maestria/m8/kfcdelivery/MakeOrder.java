@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import ni.maestria.m8.kfcdelivery.adapters.AdapterMenuCombos;
 import ni.maestria.m8.kfcdelivery.utils.DataSourceSingleton;
@@ -72,8 +73,13 @@ public class MakeOrder extends ActionBarActivity {
         int id = item.getItemId();
         switch (id){
             case R.id.action_send:
-                Intent sendOrder = new Intent(this,SendActivity.class);
-                startActivity(sendOrder);
+                if(adapterMenuCombos.getCantidad()>0) {
+                    Intent sendOrder = new Intent(this, SendActivity.class);
+                    startActivity(sendOrder);
+                }else{
+                    Toast.makeText(this,"Debes seleccionar al menos un combo",Toast.LENGTH_LONG).show();
+                }
+
                 break;
             case R.id.action_shop_car:
                 tv.setText("orden:(2) C$400");
