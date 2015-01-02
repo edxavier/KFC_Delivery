@@ -53,6 +53,10 @@
             android:name=".SendActivity"
             android:label="@string/title_activity_send" >
         </activity>
+        <activity
+            android:name=".OrderDetail"
+            android:label="@string/title_activity_order_detail" >
+        </activity>
     </application>
 
 </manifest>

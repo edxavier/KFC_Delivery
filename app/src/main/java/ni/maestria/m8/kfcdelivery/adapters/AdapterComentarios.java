@@ -4,13 +4,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.android.volley.toolbox.NetworkImageView;
 
 import java.util.ArrayList;
 
 import ni.maestria.m8.kfcdelivery.R;
 import ni.maestria.m8.kfcdelivery.models.Comment;
+import ni.maestria.m8.kfcdelivery.utils.VolleySingleton;
 
 /**
  * Created by Eder Xavier Rojas on 18/12/2014.
@@ -25,13 +27,13 @@ public class AdapterComentarios extends  RecyclerView.Adapter<AdapterComentarios
         // each data item is just a string in this case
         TextView txtNombre;
         TextView txtComentario;
-        ImageView imgCliente;
+        NetworkImageView imgCliente;
 
         public ViewHolder(View viewLayout) {
             super(viewLayout);
             txtNombre = (TextView) viewLayout.findViewById(R.id.txt_nombre_client);
             txtComentario = (TextView) viewLayout.findViewById(R.id.txt_comment);
-            imgCliente = (ImageView) viewLayout.findViewById(R.id.img_client);
+            imgCliente = (NetworkImageView) viewLayout.findViewById(R.id.img_client);
         }
     }
 
@@ -53,6 +55,7 @@ public class AdapterComentarios extends  RecyclerView.Adapter<AdapterComentarios
         Comment comment = comments.get(position);
         holder.txtNombre.setText(comment.getClient());
         holder.txtComentario.setText(comment.getComment());
+        holder.imgCliente.setImageUrl(comment.getImgUrl(), VolleySingleton.getInstance(holder.imgCliente.getContext()).getImageLoader());
     }
 
     @Override

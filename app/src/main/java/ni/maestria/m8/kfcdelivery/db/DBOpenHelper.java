@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DBOpenHelper extends SQLiteOpenHelper {
     static  String DB_NAME = "kfc";
-    static int DB_VERSION = 2;
+    static int DB_VERSION = 3;
 
 
     public DBOpenHelper(Context context) {
@@ -20,11 +20,15 @@ public class DBOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String sql = "create table temp_detalle ( _id int primary key, menu text, precio float, cantidad int, total float)";
         db.execSQL(sql);
+
+        sql = "create table "+OperationsUser.TABLE+" ( _id int primary key, social_id text, avatar text, nombre text, telefono text)";
+        db.execSQL(sql);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS temp_detalle");
+        db.execSQL("DROP TABLE IF EXISTS "+OperationsUser.TABLE);
         onCreate(db);
     }
 }

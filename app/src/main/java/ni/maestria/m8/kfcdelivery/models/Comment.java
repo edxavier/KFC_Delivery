@@ -13,8 +13,8 @@ public class Comment {
     String comment;
     String client;
     String imgUrl;
-    public static String API_GET_URL = "http://192.168.137.20:8000/api/comentarios/?format=json";
-    public static String API_POST_URL = "http://192.168.137.20:8000/api/comentarios/";
+    public static String API_GET_URL = "http://192.168.137.99:8000/api/comentarios/?format=json";
+    public static String API_POST_URL = "http://192.168.137.99:8000/api/comentarios/";
 
     public Comment() {
     }

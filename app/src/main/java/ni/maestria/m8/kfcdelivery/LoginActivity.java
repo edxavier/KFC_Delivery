@@ -17,6 +17,8 @@ import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
 import ni.maestria.m8.kfcdelivery.db.OperationsTempDetalle;
+import ni.maestria.m8.kfcdelivery.db.OperationsUser;
+import ni.maestria.m8.kfcdelivery.models.Cliente;
 
 
 public class LoginActivity extends ActionBarActivity implements View.OnClickListener,
@@ -43,6 +45,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
      * resolve them when the user clicks sign-in.
      */
     private ConnectionResult mConnectionResult;
+    OperationsUser operationsUser = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +66,8 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         pgdialog.setMessage("Conectando...");
         pgdialog.setTitle("Espere por favor");
         pgdialog.setCancelable(false);
+        if(operationsUser==null)
+            operationsUser= new OperationsUser(this);
     }
 
     @Override
@@ -78,9 +83,14 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     @Override
     public void onStart() {
         super.onStart();
-        pgdialog.show();
-        //mPlusClient.connect();
-        mGoogleApiClient.connect();
+        if(operationsUser.getUser()==null) {
+            pgdialog.show();
+            mGoogleApiClient.connect();
+        }else{
+            Intent main = new Intent().setClass(LoginActivity.this, MainActivity.class);
+            startActivityForResult(main, MAIN_ACTIVITY);
+        }
+
     }
 
     @Override
@@ -100,11 +110,13 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         if(!exit) {
             if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
                 Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-                String personName = currentPerson.getDisplayName();
-                String personPhoto = currentPerson.getImage().getUrl();
-                String personGooglePlusProfile = currentPerson.getUrl();
-
-                Toast.makeText(this, "Bienvenido, " + personName, Toast.LENGTH_LONG).show();
+                Cliente cliente = new Cliente();
+                cliente.setNombre(currentPerson.getDisplayName());
+                cliente.setImgUrl(currentPerson.getImage().getUrl());
+                cliente.setSocialId(currentPerson.getId());
+                cliente.setTelefono("---- ----");
+                operationsUser.insert(cliente);
+                Toast.makeText(this, "Bienvenido, " + cliente.getNombre(), Toast.LENGTH_LONG).show();
                 Intent main = new Intent().setClass(LoginActivity.this, MainActivity.class);
                 //startActivity(main);
                 startActivityForResult(main, MAIN_ACTIVITY);
@@ -115,11 +127,13 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
             {
                 Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
                 mGoogleApiClient.disconnect();
-                exit=false;
+                operationsUser.delete();
+               // exit=false;
                 finish();
             }else{
                 revoke();
-                exit=false;
+                operationsUser.delete();
+               // exit=false;
             }
         }
     }

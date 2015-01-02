@@ -12,7 +12,7 @@ public class Pedido {
     String estado;
     float total;
     int cantidad;
-    public static String API_POST_URL = "http://192.168.137.20:8000/api/pedido/";
+    public static String API_POST_URL = "http://192.168.137.99:8000/api/pedido/";
 
     public Pedido() {
     }

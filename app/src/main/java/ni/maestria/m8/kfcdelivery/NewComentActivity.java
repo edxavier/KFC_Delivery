@@ -22,6 +22,8 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import ni.maestria.m8.kfcdelivery.db.OperationsUser;
+import ni.maestria.m8.kfcdelivery.models.Cliente;
 import ni.maestria.m8.kfcdelivery.models.Comment;
 import ni.maestria.m8.kfcdelivery.utils.DataSourceSingleton;
 import ni.maestria.m8.kfcdelivery.utils.VolleySingleton;
@@ -30,6 +32,7 @@ import ni.maestria.m8.kfcdelivery.utils.VolleySingleton;
 public class NewComentActivity extends ActionBarActivity implements View.OnClickListener {
 
     TextView txtComentario;
+    OperationsUser operationsUser = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,8 @@ public class NewComentActivity extends ActionBarActivity implements View.OnClick
         Button enviar = (Button) findViewById(R.id.btn_enviar);
         txtComentario = (TextView) findViewById(R.id.txtComment);
         enviar.setOnClickListener(this);
+        if(operationsUser==null)
+            operationsUser= new OperationsUser(this);
     }
 
 
@@ -77,9 +82,10 @@ public class NewComentActivity extends ActionBarActivity implements View.OnClick
             pgd.show();
             final String coment = txtComentario.getText().toString();
             JSONObject jsonObject = new JSONObject();
+            Cliente cliente = operationsUser.getUser();
             try {
-                jsonObject.put("cliente", "Ed Xavier");
-                jsonObject.put("imagen_url", "http://192.168.137.20:8000/api");
+                jsonObject.put("cliente", cliente.getNombre());
+                jsonObject.put("imagen_url",cliente.getImgUrl());
                 jsonObject.put("comentario", coment);
             } catch (JSONException e) {
                 e.printStackTrace();

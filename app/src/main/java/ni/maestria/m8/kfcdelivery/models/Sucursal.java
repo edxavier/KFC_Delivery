@@ -22,7 +22,7 @@ public class Sucursal {
 
 
 
-    public static String LIST_URL = "http://192.168.137.20:8000/api/restaurantes/?format=json&lat=12.097659&lon=-86.2584606";
+    public static String LIST_URL = "http://192.168.137.99:8000/api/restaurantes/?format=json&lat=12.097659&lon=-86.2584606";
 
 
     public Sucursal() {

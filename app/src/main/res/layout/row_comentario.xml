@@ -17,12 +17,12 @@
         android:weightSum="1">
 
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/user_red"
-            android:scaleType="centerCrop"
-            android:id="@+id/img_client" />
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/img_client"
+            android:layout_width="70dp"
+            android:scaleType="fitXY"
+            android:layout_height="70dp" />
 
         <LinearLayout
             android:orientation="vertical"

@@ -1,6 +1,7 @@
 package ni.maestria.m8.kfcdelivery;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
@@ -22,6 +23,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import ni.maestria.m8.kfcdelivery.db.OperationsTempDetalle;
+import ni.maestria.m8.kfcdelivery.db.OperationsUser;
+import ni.maestria.m8.kfcdelivery.models.Cliente;
 import ni.maestria.m8.kfcdelivery.models.DetallePedido;
 import ni.maestria.m8.kfcdelivery.models.Pedido;
 import ni.maestria.m8.kfcdelivery.utils.VolleySingleton;
@@ -32,6 +35,8 @@ public class SendActivity extends ActionBarActivity implements View.OnClickListe
     TextView txtTelefono;
     TextView txtDireccion;
     OperationsTempDetalle dbOperations = null;
+    OperationsUser operationsUser = null;
+    Cliente cliente= null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +49,11 @@ public class SendActivity extends ActionBarActivity implements View.OnClickListe
         btnTerminar.setOnClickListener(this);
         if(dbOperations==null)
             dbOperations = new OperationsTempDetalle(this);
+        if(operationsUser==null)
+            operationsUser= new OperationsUser(this);
+        cliente = operationsUser.getUser();
+        txtNombre.setText(cliente.getNombre());
+        txtTelefono.setText(cliente.getTelefono());
     }
 
     @Override
@@ -66,7 +76,7 @@ public class SendActivity extends ActionBarActivity implements View.OnClickListe
                 jsonObject.put("telefono", txtTelefono.getText().toString());
                 jsonObject.put("direccion", txtDireccion.getText().toString());
                 jsonObject.put("estado", "EN ESPERA");
-                jsonObject.put("social_id", "ddddddddddddddddddddddG+");
+                jsonObject.put("social_id", cliente.getSocialId());
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -90,6 +100,12 @@ public class SendActivity extends ActionBarActivity implements View.OnClickListe
                             sendDetalle(dp,pedidoUrl);
                     }
                     pgd.dismiss();
+                    dbOperations.delete();
+                    Toast.makeText(getApplicationContext(),"¡Su pedio ha sido enviado!",Toast.LENGTH_LONG).show();
+
+                    Intent returnIntent = new Intent();
+                    //returnIntent.putExtra("result",MainActivity.RESULT_EXIT_SESSION);
+                    setResult(RESULT_OK,returnIntent);
                     finish();
                 }
             },new Response.ErrorListener() {

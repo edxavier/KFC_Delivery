@@ -47,6 +47,26 @@ public class AdapterMenuCombos extends RecyclerView.Adapter<AdapterMenuCombos.Vi
         return cantidad;
     }
 
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public float getTotal() {
+        return total;
+    }
+
+    public void setTotal(float total) {
+        this.total = total;
+    }
+
+    public ArrayList<MenuCombos> getOrderArrayList() {
+        return orderArrayList;
+    }
+
+    public void setOrderArrayList(ArrayList<MenuCombos> orderArrayList) {
+        this.orderArrayList = orderArrayList;
+    }
+
     @Override
     public AdapterMenuCombos.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(view, parent, false);

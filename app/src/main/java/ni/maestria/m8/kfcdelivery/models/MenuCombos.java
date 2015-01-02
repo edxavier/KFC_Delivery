@@ -14,7 +14,7 @@ public class MenuCombos {
     String descripcion;
     String precio;
     String imgUrl;
-    public static String API_URL= "http://192.168.137.20:8000/api/menu/?format=json";
+    public static String API_URL= "http://192.168.137.99:8000/api/menu/?format=json";
 
     public MenuCombos() {
     }

@@ -17,5 +17,6 @@
         que pertenece al grupo Yum! Brands.</string>
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_send">KFC</string>
+    <string name="title_activity_order_detail">OrderDetail</string>
 
 </resources>
