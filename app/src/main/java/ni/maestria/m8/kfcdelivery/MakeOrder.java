@@ -87,8 +87,8 @@ public class MakeOrder extends ActionBarActivity {
 
                 break;
             case R.id.action_shop_car:
-                tv.setText("orden:(2) C$400");
-              //  theMenu.findItem(3).setActionView(tv);
+                Intent detailOrder = new Intent(this, OrderDetail.class);
+                startActivity(detailOrder);
                 break;
         }
 

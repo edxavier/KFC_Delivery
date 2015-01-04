@@ -2,7 +2,6 @@ package ni.maestria.m8.kfcdelivery.utils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -14,6 +13,7 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 
 import ni.maestria.m8.kfcdelivery.R;
+import ni.maestria.m8.kfcdelivery.db.OperationsCommentRestaurants;
 import ni.maestria.m8.kfcdelivery.models.Comment;
 import ni.maestria.m8.kfcdelivery.models.MenuCombos;
 import ni.maestria.m8.kfcdelivery.models.Sucursal;
@@ -29,6 +29,7 @@ public class DataSourceSingleton {
     private ArrayList<MenuCombos> menuComboses = new ArrayList<>();
     private static DataSourceSingleton instance;
     ProgressDialog pgd;
+    OperationsCommentRestaurants operationsCommentRestaurants = null;
     private int dataRequests;//variable para almacenar el numero de intentos de conexion
 
     private DataReadyListener dataReadyListener;
@@ -39,6 +40,8 @@ public class DataSourceSingleton {
         pgd.setCancelable(false);
         pgd.setTitle("Espere por favor...");
         pgd.setIcon(R.drawable.ic_action_info_outline);
+
+        operationsCommentRestaurants = new OperationsCommentRestaurants(context);
 
         pgd.show();
         getSucursalsArrayListFromServer(context);
@@ -76,6 +79,8 @@ public class DataSourceSingleton {
                 dataRequests=0;
                 sucursalsArray = Sucursal.getParseSucursalesJson(response);
                 dataReadyListener.OnSucursalesDataReady(sucursalsArray);
+                for(Sucursal sucursal : sucursalsArray)
+                    operationsCommentRestaurants.insert(sucursal);
             }
         },new Response.ErrorListener() {
             @Override
@@ -84,10 +89,12 @@ public class DataSourceSingleton {
                 if(dataRequests<3)
                     getSucursalsArrayListFromServer(context);
                 else {
-                    Toast.makeText(context,
-                            "Error al cargar los datos del servidor...",
-                            Toast.LENGTH_LONG).show();
+                  // Toast.makeText(context,"Error al cargar los datos del servidor...",
+                            //Toast.LENGTH_LONG).show();
                     dataRequests=0;
+                    //cargar lo q se tenga en SQLITE
+                    sucursalsArray = operationsCommentRestaurants.getSucursalesCache();
+                    dataReadyListener.OnSucursalesDataReady(sucursalsArray);
                     pgd.dismiss();
                 }
             }
@@ -103,12 +110,16 @@ public class DataSourceSingleton {
             @Override
             public void onResponse(JSONArray response) {
                 commentArrayList = Comment.getParsedJson(response);
+                operationsCommentRestaurants.deleteComments();
+                for(Comment comment : commentArrayList)
+                    operationsCommentRestaurants.insert(comment);
             }
         },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //pgd.dismiss();
-                    getCommentsArrayListFromServer(context);
+                   // getCommentsArrayListFromServer(context);
+                commentArrayList = operationsCommentRestaurants.getComentariosCache();
             }
         });
         requestQueue.add(req);
@@ -121,12 +132,16 @@ public class DataSourceSingleton {
             @Override
             public void onResponse(JSONArray response) {
                 menuComboses = MenuCombos.getParsedJson(response);
+                operationsCommentRestaurants.deleteCombos();
+                for(MenuCombos combos : menuComboses)
+                    operationsCommentRestaurants.insert(combos);
             }
         },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //pgd.dismiss();
-                getMenusArrayListFromServer(context);
+               // getMenusArrayListFromServer(context);
+                menuComboses = operationsCommentRestaurants.getCombosCache();
             }
         });
         requestQueue.add(req);
