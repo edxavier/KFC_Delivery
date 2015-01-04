@@ -1,12 +1,15 @@
 package ni.maestria.m8.kfcdelivery.fragments;
 
+import android.app.Activity;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -30,6 +33,9 @@ import ni.maestria.m8.kfcdelivery.utils.DataSourceSingleton;
 public class FragmentMap extends Fragment {
 
     LatLng managua = new LatLng(12.1297372,-86.2629238);
+    private Location loc;
+    Activity activity = getActivity();
+
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -40,7 +46,7 @@ public class FragmentMap extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        
+
         GoogleMap mapa = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map)).getMap();
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(managua)//Centramos el mapa en Managua
@@ -83,6 +89,18 @@ public class FragmentMap extends Fragment {
 // Get back the mutable Circle
             mapa.addCircle(circleOptions);
 
+            String x = retornarcoordenadas();
+            Toast t = Toast.makeText(activity, x,Toast.LENGTH_LONG);
+            t.show();
+
         }
+    }
+
+    private String retornarcoordenadas(){
+        String valores = null;
+        loc.getLatitude();
+        loc.getLongitude();
+        valores = loc.getLatitude() + "," + loc.getLongitude();
+        return valores;
     }
 }
