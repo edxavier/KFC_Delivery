@@ -18,5 +18,6 @@
     <string name="title_activity_login">Sign in</string>
     <string name="title_activity_send">KFC</string>
     <string name="title_activity_order_detail">OrderDetail</string>
+    <string name="preferencia">Preferencias</string>
 
 </resources>

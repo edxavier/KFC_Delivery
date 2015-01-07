@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Preferencias Aplicacion KFC">
+
+        <EditTextPreference
+            android:key="NUsuario"
+            android:title="Nombre de Usuario"
+            android:summary="Escriba el Nombre de su usuaruo google"
+            android:dialogTitle="Introduce valor" />
+
+        <EditTextPreference
+            android:key="Servid"
+            android:title="NOmbre del Servidor"
+            android:summary="Escriba el Nombre del Servidor"
+            android:dialogTitle="Introduce valor" />
+
+        <EditTextPreference
+            android:key="opcion2"
+            android:title="Preferencia 2"
+            android:summary="Descripción de la preferencia 2"
+            android:dialogTitle="Introduce valor" />
+
+        <EditTextPreference
+            android:key="opcion2"
+            android:title="Preferencia 2"
+            android:summary="Descripción de la preferencia 2"
+            android:dialogTitle="Introduce valor" />
+    </PreferenceCategory>
+</PreferenceScreen>
