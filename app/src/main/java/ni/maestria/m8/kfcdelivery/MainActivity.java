@@ -1,12 +1,15 @@
 package ni.maestria.m8.kfcdelivery;
 
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import ni.maestria.m8.kfcdelivery.fragments.FragmenComments;
 import ni.maestria.m8.kfcdelivery.fragments.FragmentList;
@@ -20,6 +23,9 @@ public class MainActivity extends ActionBarActivity {
     public static int RESULT_EXIT = 1;
     public static int RESULT_EXIT_SESSION = 2;
     public static int RESULT_REVOKE_ACCESS = 3;
+    KfcBroadcastReceiver receiver;
+    IntentFilter filter;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +33,22 @@ public class MainActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_main);
         setActionBar();
-
+        receiver = new KfcBroadcastReceiver();
+        filter = new IntentFilter(KfcService.KFC_SUCURSALS_FILTER);
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
+        progressDialog.setTitle("Espera un momento por favor");
+        progressDialog.setMessage("Cargando...");
+        progressDialog.setIcon(R.drawable.ic_action_info_outline);
+        progressDialog.show();
+        registerReceiver(receiver,filter);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -48,9 +67,8 @@ public class MainActivity extends ActionBarActivity {
         //noinspection SimplifiableIfStatement
         switch (id){
             case  R.id.action_settings:
-                Toast.makeText(this,"Conf",Toast.LENGTH_LONG).show();
-                Intent newOrder = new Intent(this,MakeOrder.class);
-                startActivity(newOrder);
+                Intent pref = new Intent(this,OpcionesActivity.class);
+                startActivity(pref);
                 break;
             case R.id.action_add_comment:
                 Intent sendComment = new Intent(this,NewComentActivity.class);
@@ -74,14 +92,11 @@ public class MainActivity extends ActionBarActivity {
                 setResult(RESULT_OK,returnIntent);
                 finish();
                 break;
-            case R.id.action_pref:
-                Intent pref = new Intent(this,OpcionesActivity.class);
-                startActivity(pref);
+            case R.id.action_see_pedidos:
+                Intent mp = new Intent(this,MisPedidos.class);
+                startActivity(mp);
                 break;
         }
-        //if (id == R.id.action_settings) {
-          //  return true;
-        //}
 
         return super.onOptionsItemSelected(item);
     }
@@ -105,5 +120,15 @@ public class MainActivity extends ActionBarActivity {
         actionBar.addTab(tab3);
 
     }
+
+
+    class KfcBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            progressDialog.dismiss();
+        }
+    }
+
+
 
 }

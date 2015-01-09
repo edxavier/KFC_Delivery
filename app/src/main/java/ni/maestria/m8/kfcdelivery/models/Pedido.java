@@ -1,5 +1,9 @@
 package ni.maestria.m8.kfcdelivery.models;
 
+import android.content.Context;
+
+import ni.maestria.m8.kfcdelivery.utils.DataSourceSingleton;
+
 /**
  * Created by Eder Xavier Rojas on 23/12/2014.
  */
@@ -80,4 +84,10 @@ public class Pedido {
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
+
+
+    public static String GET_API_POST_URL(Context context){
+        return  DataSourceSingleton.getServer(context)+"/api/pedido/";
+    }
+
 }

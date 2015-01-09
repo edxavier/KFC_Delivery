@@ -1,18 +1,19 @@
 package ni.maestria.m8.kfcdelivery.utils;
 
-import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 
 import java.util.ArrayList;
 
-import ni.maestria.m8.kfcdelivery.R;
+import ni.maestria.m8.kfcdelivery.KfcService;
 import ni.maestria.m8.kfcdelivery.db.OperationsCommentRestaurants;
 import ni.maestria.m8.kfcdelivery.models.Comment;
 import ni.maestria.m8.kfcdelivery.models.MenuCombos;
@@ -25,29 +26,25 @@ public class DataSourceSingleton {
 
     private ArrayList<Sucursal> sucursalsArray = new ArrayList<>();
 
+    Intent intent;
     private ArrayList<Comment> commentArrayList = new ArrayList<>();
     private ArrayList<MenuCombos> menuComboses = new ArrayList<>();
     private static DataSourceSingleton instance;
-    ProgressDialog pgd;
+    LatLng userPosition = null;
     OperationsCommentRestaurants operationsCommentRestaurants = null;
     private int dataRequests;//variable para almacenar el numero de intentos de conexion
 
-    private DataReadyListener dataReadyListener;
 
     public DataSourceSingleton(final Context context) {
-        pgd = new ProgressDialog(context);
-        pgd.setMessage("Inicializando datos...");
-        pgd.setCancelable(false);
-        pgd.setTitle("Espere por favor...");
-        pgd.setIcon(R.drawable.ic_action_info_outline);
-
         operationsCommentRestaurants = new OperationsCommentRestaurants(context);
+    }
 
-        pgd.show();
-        getSucursalsArrayListFromServer(context);
-        getCommentsArrayListFromServer(context);
-        getMenusArrayListFromServer(context);
+    public LatLng getUserPosition() {
+        return userPosition;
+    }
 
+    public void setUserPosition(LatLng userPosition) {
+        this.userPosition = userPosition;
     }
 
     public ArrayList<Sucursal> getSucursalsArray() {
@@ -67,35 +64,42 @@ public class DataSourceSingleton {
         return instance;
     }
 
+    public static String getServer(Context context){
+        SettingsKFC setting = new SettingsKFC(context);
+        return "http://"+setting.getServer()+":"+setting.getPort();
+    }
 
     //Funcion para consumo de API REST del servidor para la lista de restaurantes
     public void getSucursalsArrayListFromServer(final Context context){
         RequestQueue requestQueue = VolleySingleton.getInstance(context).getRequestQueue();
         dataRequests++;
-        JsonArrayRequest req = new JsonArrayRequest(Sucursal.LIST_URL,new Response.Listener<JSONArray>() {
+        String  apiUrl = Sucursal.GET_API_GET_URL(context,this.userPosition);
+
+        JsonArrayRequest req = new JsonArrayRequest(apiUrl,new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                pgd.dismiss();
+                //pgd.dismiss();
                 dataRequests=0;
                 sucursalsArray = Sucursal.getParseSucursalesJson(response);
-                dataReadyListener.OnSucursalesDataReady(sucursalsArray);
+                //dataReadyListener.OnSucursalesDataReady(sucursalsArray);
+                operationsCommentRestaurants.deleteSucursales();
                 for(Sucursal sucursal : sucursalsArray)
                     operationsCommentRestaurants.insert(sucursal);
+
+                sendBroadcast(context,KfcService.KFC_SUCURSALS_FILTER);
             }
         },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //pgd.dismiss();
-                if(dataRequests<3)
+                if(dataRequests<2)
                     getSucursalsArrayListFromServer(context);
                 else {
-                  // Toast.makeText(context,"Error al cargar los datos del servidor...",
-                            //Toast.LENGTH_LONG).show();
                     dataRequests=0;
                     //cargar lo q se tenga en SQLITE
                     sucursalsArray = operationsCommentRestaurants.getSucursalesCache();
-                    dataReadyListener.OnSucursalesDataReady(sucursalsArray);
-                    pgd.dismiss();
+                    sendBroadcast(context,KfcService.KFC_SUCURSALS_FILTER);
+                   // pgd.dismiss();
                 }
             }
         });
@@ -113,6 +117,7 @@ public class DataSourceSingleton {
                 operationsCommentRestaurants.deleteComments();
                 for(Comment comment : commentArrayList)
                     operationsCommentRestaurants.insert(comment);
+                sendBroadcast(context,KfcService.KFC_COMMENTS_FILTER);
             }
         },new Response.ErrorListener() {
             @Override
@@ -120,6 +125,7 @@ public class DataSourceSingleton {
                 //pgd.dismiss();
                    // getCommentsArrayListFromServer(context);
                 commentArrayList = operationsCommentRestaurants.getComentariosCache();
+                sendBroadcast(context,KfcService.KFC_COMMENTS_FILTER);
             }
         });
         requestQueue.add(req);
@@ -135,6 +141,7 @@ public class DataSourceSingleton {
                 operationsCommentRestaurants.deleteCombos();
                 for(MenuCombos combos : menuComboses)
                     operationsCommentRestaurants.insert(combos);
+               // sendBroadcast(context);
             }
         },new Response.ErrorListener() {
             @Override
@@ -142,21 +149,19 @@ public class DataSourceSingleton {
                 //pgd.dismiss();
                // getMenusArrayListFromServer(context);
                 menuComboses = operationsCommentRestaurants.getCombosCache();
+              //  sendBroadcast(context);
             }
         });
         requestQueue.add(req);
     }
 
 
-    //##########################################################################################
-    public void setDataReadyListener(DataReadyListener dataReadyListener) {
-        this.dataReadyListener = dataReadyListener;
-    }
-
-    //Interface para notificar cuando los datos esten cargados
-    public interface DataReadyListener{
-        public void OnSucursalesDataReady( ArrayList<Sucursal> sucursals);
-
+    public void sendBroadcast(Context context, String filter)
+    {
+        intent = new Intent();
+        intent.setAction(filter);
+        context.sendBroadcast(intent);
+         //sendBroadcast(intent);
     }
 }
 

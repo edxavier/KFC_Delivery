@@ -27,6 +27,7 @@ import ni.maestria.m8.kfcdelivery.db.OperationsUser;
 import ni.maestria.m8.kfcdelivery.models.Cliente;
 import ni.maestria.m8.kfcdelivery.models.DetallePedido;
 import ni.maestria.m8.kfcdelivery.models.Pedido;
+import ni.maestria.m8.kfcdelivery.utils.SettingsKFC;
 import ni.maestria.m8.kfcdelivery.utils.VolleySingleton;
 
 
@@ -53,7 +54,11 @@ public class SendActivity extends ActionBarActivity implements View.OnClickListe
             operationsUser= new OperationsUser(this);
         cliente = operationsUser.getUser();
         txtNombre.setText(cliente.getNombre());
-        txtTelefono.setText(cliente.getTelefono());
+
+        SettingsKFC settingsKFC = new SettingsKFC(this);
+
+        txtTelefono.setText(settingsKFC.getPhone());
+        txtDireccion.setText(settingsKFC.getAddress());
     }
 
     @Override

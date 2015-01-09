@@ -178,8 +178,12 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         if(requestCode == MAIN_ACTIVITY){
             if(resultCode == RESULT_OK) {
                 int result = data.getIntExtra("result",0);
-                if(result == MainActivity.RESULT_EXIT)
+                if(result == MainActivity.RESULT_EXIT){
                     finish();
+                    android.os.Process.killProcess(android.os.Process.myPid());
+                    System.exit(1);
+                    //finalize();
+                }
                 else if(result == MainActivity.RESULT_EXIT_SESSION)
                 {
                     if (mGoogleApiClient.isConnected()) {

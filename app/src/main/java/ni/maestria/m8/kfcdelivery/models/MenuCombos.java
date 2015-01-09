@@ -1,10 +1,14 @@
 package ni.maestria.m8.kfcdelivery.models;
 
+import android.content.Context;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import ni.maestria.m8.kfcdelivery.utils.DataSourceSingleton;
 
 /**
  * Created by cura on 20/12/2014.
@@ -71,6 +75,9 @@ public class MenuCombos {
             }
         }
         return menuComboses;
+    }
+    public static String GET_API_GET_URL(Context context){
+        return  DataSourceSingleton.getServer(context)+"/api/menu/?format=json";
     }
 
 }

@@ -1,5 +1,9 @@
 package ni.maestria.m8.kfcdelivery.fragments;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,11 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
+import ni.maestria.m8.kfcdelivery.KfcService;
 import ni.maestria.m8.kfcdelivery.R;
 import ni.maestria.m8.kfcdelivery.adapters.AdapterSucursal;
-import ni.maestria.m8.kfcdelivery.models.Sucursal;
 import ni.maestria.m8.kfcdelivery.utils.DataSourceSingleton;
 
 /**
@@ -26,10 +28,25 @@ public class FragmentList extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private AdapterSucursal adapterSucursal;
 
+    KfcBroadcastReceiver receiver;
+    IntentFilter filter;
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_list, container, false);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getActivity().registerReceiver(receiver,filter);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        getActivity().unregisterReceiver(receiver);
     }
 
     @Override
@@ -44,25 +61,24 @@ public class FragmentList extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        receiver = new KfcBroadcastReceiver();
+        filter = new IntentFilter(KfcService.KFC_SUCURSALS_FILTER);
 
-        DataSourceSingleton.getInstance(getActivity()).setDataReadyListener(new DataSourceSingleton.DataReadyListener() {
+        loadList();
+    }
 
-            @Override
-            public void OnSucursalesDataReady(ArrayList<Sucursal> sucursals) {
-                adapterSucursal = new AdapterSucursal(sucursals,R.layout.row_list);
-                mRecyclerView.setAdapter(adapterSucursal);
-            }
-
-        });
-
-        adapterSucursal = new AdapterSucursal(
-                DataSourceSingleton.getInstance(getActivity()).getSucursalsArray(),
-                R.layout.row_list);
-        mRecyclerView.setAdapter(adapterSucursal);
-
-
+    public void loadList(){
+            adapterSucursal = new AdapterSucursal(
+                    DataSourceSingleton.getInstance(getActivity()).getSucursalsArray(),
+                    R.layout.row_list);
+            mRecyclerView.setAdapter(adapterSucursal);
     }
 
 
-
+    class KfcBroadcastReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            loadList();
+        }
+    }
 }

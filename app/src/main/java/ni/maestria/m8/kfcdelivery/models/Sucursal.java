@@ -1,10 +1,16 @@
 package ni.maestria.m8.kfcdelivery.models;
 
+import android.content.Context;
+
+import com.google.android.gms.maps.model.LatLng;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import ni.maestria.m8.kfcdelivery.utils.DataSourceSingleton;
 
 /**
  * Created by cura on 11/12/2014.
@@ -97,6 +103,17 @@ public class Sucursal {
             }
         }
         return sucursals;
+    }
+
+    public static String GET_API_GET_URL(Context context, LatLng pos){
+            if(pos!=null) {
+                return DataSourceSingleton.getServer(context)
+                        + "/api/restaurantes/?format=json&lat=" + Double.toString(pos.latitude)
+                        + "&lon=" + Double.toString(pos.longitude);
+            }
+            else
+                return  DataSourceSingleton.getServer(context)+"/api/restaurantes/?format=json";
+
     }
 
 }

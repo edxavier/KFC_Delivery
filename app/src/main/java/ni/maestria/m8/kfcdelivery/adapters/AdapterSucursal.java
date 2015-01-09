@@ -8,13 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import ni.maestria.m8.kfcdelivery.MakeOrder;
 import ni.maestria.m8.kfcdelivery.R;
 import ni.maestria.m8.kfcdelivery.models.Sucursal;
+import ni.maestria.m8.kfcdelivery.utils.DataSourceSingleton;
 
 /**
  * Created by cura on 11/12/2014.
@@ -83,7 +83,7 @@ public class AdapterSucursal extends  RecyclerView.Adapter<AdapterSucursal.ViewH
             view.getContext().startActivity(intent);
         }
         else if (view.getId() == holder.order.getId()) {
-            Toast.makeText(view.getContext(), "hacer pedido", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(view.getContext(), "hacer pedido", Toast.LENGTH_SHORT).show();
             Intent newOrder = new Intent(view.getContext(),MakeOrder.class);
             view.getContext().startActivity(newOrder);
         }
@@ -107,7 +107,25 @@ public class AdapterSucursal extends  RecyclerView.Adapter<AdapterSucursal.ViewH
         viewHolder.sucursal.setText(sucursal.getNombre());
         viewHolder.sucursal.setTag(sucursal.getTelefono());
         viewHolder.telefono= sucursal.getTelefono();
-
+        DataSourceSingleton ds = DataSourceSingleton.getInstance(viewHolder.call.getContext());
+        if(ds.getUserPosition()==null) {
+            viewHolder.order.setEnabled(false);
+            viewHolder.order.setAlpha((float) 0.4);
+            viewHolder.call.setEnabled(false);
+            viewHolder.call.setAlpha((float) 0.4);
+        }else{
+            if(sucursal.getDistancia() > 6 || sucursal.getDistancia() == 0 ){
+                viewHolder.order.setEnabled(false);
+                viewHolder.order.setAlpha((float) 0.4);
+                viewHolder.call.setEnabled(false);
+                viewHolder.call.setAlpha((float) 0.4);
+            }else{
+                viewHolder.order.setEnabled(true);
+                viewHolder.order.setAlpha((float) 1);
+                viewHolder.call.setEnabled(true);
+                viewHolder.call.setAlpha((float) 1);
+            }
+        }
         viewHolder.direccion.setText(sucursal.getDireccion());
         String dist = "A un radio de "+Double.toString(sucursal.getDistancia())+" km de ti";
         viewHolder.distancia.setText(dist);

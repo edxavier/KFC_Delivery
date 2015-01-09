@@ -1,5 +1,9 @@
 package ni.maestria.m8.kfcdelivery.models;
 
+import android.content.Context;
+
+import ni.maestria.m8.kfcdelivery.utils.DataSourceSingleton;
+
 /**
  * Created by Eder Xavier Rojas on 25/12/2014.
  */
@@ -45,6 +49,11 @@ public class DetallePedido {
 
     public float getSubTotal() {
         return subTotal;
+    }
+
+
+    public static String GET_API_POST_URL(Context context){
+        return DataSourceSingleton.getServer(context)+"/api/detalle_pedido/";
     }
 
     public void setSubTotal(float subTotal) {

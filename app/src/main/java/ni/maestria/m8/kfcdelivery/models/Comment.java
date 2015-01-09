@@ -1,10 +1,14 @@
 package ni.maestria.m8.kfcdelivery.models;
 
+import android.content.Context;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import ni.maestria.m8.kfcdelivery.utils.DataSourceSingleton;
 
 /**
  * Created by Eder Xavier Rojas on 18/12/2014.
@@ -41,6 +45,15 @@ public class Comment {
 
     public void setClient(String client) {
         this.client = client;
+    }
+
+
+    public static String GET_API_GET_URL(Context context){
+        return  DataSourceSingleton.getServer(context)+"/api/comentarios/?format=json";
+    }
+
+    public static String GET_API_POST_URL(Context context){
+        return  DataSourceSingleton.getServer(context)+"/api/comentarios/";
     }
 
     public static ArrayList<Comment> getParsedJson(JSONArray response)

@@ -2,6 +2,13 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".MainActivity">
+
+    <item android:id="@+id/action_see_pedidos"
+        android:title="Mis Pedidos"
+        android:orderInCategory="100"
+        android:icon="@drawable/ic_action_list"
+        app:showAsAction="ifRoom"/>
+
     <item android:id="@+id/action_add_comment"
           android:title="@string/action_add_comment"
           android:orderInCategory="100"
@@ -14,10 +21,7 @@
           android:icon="@drawable/ic_action_settings"
           app:showAsAction="ifRoom"/>
 
-    <item android:id="@+id/action_pref"
-        android:title="@string/preferencia"
-        android:orderInCategory="100"
-        app:showAsAction="never"/>
+
 
     <item android:id="@+id/action_exit"
           android:title="@string/action_exit"
