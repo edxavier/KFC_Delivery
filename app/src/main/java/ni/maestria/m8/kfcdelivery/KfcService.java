@@ -24,6 +24,7 @@ public class KfcService extends Service {
     static int DELAY = 30*1000;//1 min
     public static String KFC_SUCURSALS_FILTER = "ni.maestria.m8.kfcdelivery.sucursals";
     public static String KFC_COMMENTS_FILTER = "ni.maestria.m8.kfcdelivery.comments";
+    public static String KFC_PEDIDO_FILTER = "ni.maestria.m8.kfcdelivery.pedidos";
 
     private boolean isRunning = false;
     UpdaterThread updaterThread ;
@@ -132,6 +133,7 @@ public class KfcService extends Service {
                     ds.getSucursalsArrayListFromServer(cntx);
                     ds.getCommentsArrayListFromServer(cntx);
                     ds.getMenusArrayListFromServer(cntx);
+                    ds.getPedidosArrayListFromServer(cntx);
 
                     Thread.sleep(DELAY);
                 } catch (InterruptedException e) {

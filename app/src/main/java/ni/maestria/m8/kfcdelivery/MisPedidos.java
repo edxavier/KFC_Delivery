@@ -1,17 +1,44 @@
 package ni.maestria.m8.kfcdelivery;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import ni.maestria.m8.kfcdelivery.adapters.AdapterPedidos;
+import ni.maestria.m8.kfcdelivery.utils.DataSourceSingleton;
 
 
 public class MisPedidos extends ActionBarActivity {
 
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private AdapterPedidos adapterPedidos;
+
+    KfcBroadcastReceiver receiver;
+    IntentFilter filter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mis_pedidos);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_mis_pedidos);
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        receiver = new KfcBroadcastReceiver();
+        filter = new IntentFilter(KfcService.KFC_PEDIDO_FILTER);
     }
 
 
@@ -36,4 +63,32 @@ public class MisPedidos extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    
+    
+
+    class KfcBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            loadList();
+        }
+    }
+
+    private void loadList() {
+        adapterPedidos = new AdapterPedidos(R.layout.row_pedidos,
+                DataSourceSingleton.getInstance(this).getPedidos());
+        mRecyclerView.setAdapter(adapterPedidos);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+       registerReceiver(receiver, filter);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        unregisterReceiver(receiver);
+    }
+
 }

@@ -2,39 +2,27 @@ package ni.maestria.m8.kfcdelivery.models;
 
 import android.content.Context;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 import ni.maestria.m8.kfcdelivery.utils.DataSourceSingleton;
 
 /**
  * Created by Eder Xavier Rojas on 23/12/2014.
  */
 public class Pedido {
-    String cliente;
-    String socialId;
+
+
     String telefonoEnvio;
     String direccionEnvio;
-    String menu;
     String estado;
-    float total;
-    int cantidad;
+
     public static String API_POST_URL = "http://192.168.137.99:8000/api/pedido/";
 
     public Pedido() {
-    }
-
-    public String getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(String cliente) {
-        this.cliente = cliente;
-    }
-
-    public String getSocialId() {
-        return socialId;
-    }
-
-    public void setSocialId(String socialId) {
-        this.socialId = socialId;
     }
 
     public String getTelefonoEnvio() {
@@ -53,14 +41,6 @@ public class Pedido {
         this.direccionEnvio = direccionEnvio;
     }
 
-    public String getMenu() {
-        return menu;
-    }
-
-    public void setMenu(String menu) {
-        this.menu = menu;
-    }
-
     public String getEstado() {
         return estado;
     }
@@ -69,25 +49,26 @@ public class Pedido {
         this.estado = estado;
     }
 
-    public float getTotal() {
-        return total;
+    public static ArrayList<Pedido> parseJson(JSONArray response){
+        ArrayList<Pedido> pedidos = new ArrayList<Pedido>();
+        for(int i = 0; i<response.length();i++){
+            Pedido pedido = new Pedido();
+            try {
+                JSONObject jsonObject = (JSONObject) response.get(i);
+                pedido.setDireccionEnvio(jsonObject.getString("direccion"));
+                pedido.setTelefonoEnvio(jsonObject.getString("telefono"));
+                pedido.setEstado(jsonObject.getString("estado"));
+                pedidos.add(pedido);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return pedidos;
     }
 
-    public void setTotal(float total) {
-        this.total = total;
-    }
-
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
-
-    public static String GET_API_POST_URL(Context context){
-        return  DataSourceSingleton.getServer(context)+"/api/pedido/";
+    public static String GET_API_GET_URL(Context context, String socialId){
+        return  DataSourceSingleton.getServer(context)+"/api/pedido/?format=json&social_id="+socialId;
     }
 
 }

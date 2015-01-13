@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="ni.maestria.m8.kfcdelivery.MainActivity2">
+
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textSize="12dp"
+                android:text="Direccion"
+                android:id="@+id/txt_direccion_pedido" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:gravity="center"
+                android:textSize="12dp"
+                android:text="Cantidad"
+                android:id="@+id/txt_telefono_pedido" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:textSize="12dp"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="SubTotal"
+                android:id="@+id/txt_estado_pedido" />
+
+
+        </LinearLayout>
+
+</RelativeLayout>

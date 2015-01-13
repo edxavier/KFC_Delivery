@@ -2,6 +2,7 @@ package ni.maestria.m8.kfcdelivery.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -15,8 +16,11 @@ import java.util.ArrayList;
 
 import ni.maestria.m8.kfcdelivery.KfcService;
 import ni.maestria.m8.kfcdelivery.db.OperationsCommentRestaurants;
+import ni.maestria.m8.kfcdelivery.db.OperationsUser;
+import ni.maestria.m8.kfcdelivery.models.Cliente;
 import ni.maestria.m8.kfcdelivery.models.Comment;
 import ni.maestria.m8.kfcdelivery.models.MenuCombos;
+import ni.maestria.m8.kfcdelivery.models.Pedido;
 import ni.maestria.m8.kfcdelivery.models.Sucursal;
 
 /**
@@ -29,6 +33,7 @@ public class DataSourceSingleton {
     Intent intent;
     private ArrayList<Comment> commentArrayList = new ArrayList<>();
     private ArrayList<MenuCombos> menuComboses = new ArrayList<>();
+    private ArrayList<Pedido> pedidos = new ArrayList<>();
     private static DataSourceSingleton instance;
     LatLng userPosition = null;
     OperationsCommentRestaurants operationsCommentRestaurants = null;
@@ -56,6 +61,10 @@ public class DataSourceSingleton {
     }
     public ArrayList<MenuCombos> getMenuComboses() {
         return menuComboses;
+    }
+
+    public ArrayList<Pedido> getPedidos() {
+        return pedidos;
     }
 
     public static DataSourceSingleton getInstance(Context context) {
@@ -138,18 +147,35 @@ public class DataSourceSingleton {
             @Override
             public void onResponse(JSONArray response) {
                 menuComboses = MenuCombos.getParsedJson(response);
-                operationsCommentRestaurants.deleteCombos();
-                for(MenuCombos combos : menuComboses)
-                    operationsCommentRestaurants.insert(combos);
-               // sendBroadcast(context);
+
             }
         },new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 //pgd.dismiss();
-               // getMenusArrayListFromServer(context);
-                menuComboses = operationsCommentRestaurants.getCombosCache();
-              //  sendBroadcast(context);
+
+            }
+        });
+        requestQueue.add(req);
+    }
+
+    public void getPedidosArrayListFromServer(final Context context){
+        OperationsUser operationsUser = new OperationsUser(context);
+        Cliente cliente = operationsUser.getUser();
+        RequestQueue requestQueue = VolleySingleton.getInstance(context).getRequestQueue();
+        JsonArrayRequest req = new JsonArrayRequest(Pedido.GET_API_GET_URL(context,cliente.getSocialId()),new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                pedidos = Pedido.parseJson(response);
+                sendBroadcast(context,KfcService.KFC_PEDIDO_FILTER);
+            }
+        },new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //pgd.dismiss();
+                // getMenusArrayListFromServer(context);
+                Toast.makeText(context,"No se pudieron obtener los datos",Toast.LENGTH_LONG).show();
+                //  sendBroadcast(context);
             }
         });
         requestQueue.add(req);
