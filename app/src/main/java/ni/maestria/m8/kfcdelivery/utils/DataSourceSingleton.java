@@ -2,7 +2,6 @@ package ni.maestria.m8.kfcdelivery.utils;
 
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -174,7 +173,7 @@ public class DataSourceSingleton {
             public void onErrorResponse(VolleyError error) {
                 //pgd.dismiss();
                 // getMenusArrayListFromServer(context);
-                Toast.makeText(context,"No se pudieron obtener los datos",Toast.LENGTH_LONG).show();
+                //Toast.makeText(context,"No se pudieron obtener los datos",Toast.LENGTH_LONG).show();
                 //  sendBroadcast(context);
             }
         });
